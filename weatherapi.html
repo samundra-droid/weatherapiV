@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast For Vaughan,Ontario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightblue; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .weather-container {
+            background-color: #ffffff; /* White background for the container */
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .weather-gif {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .temp {
+            font-size: 28px;
+            color: #00bfff;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #ff6347;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <h1>Weather Forecast For Vaughan,Ontario</h1>
+        <img src="C:\\Users\\khadk\\Downloads\\weather gif.gif" alt="Weather GIF" class="weather-gif">
+        <div class="weather-info">
+            <h2>Current Temperature:</h2>
+            <p id="currentTemp" class="temp"></p>
+            <h2>Maximum Temperature:</h2>
+            <p id="maxTemp" class="temp"></p>
+            <h2>Minimum Temperature:</h2>
+            <p id="minTemp" class="temp"></p>
+            <p id="errorMessage" class="error"></p>
+        </div>
+    </div>
+
+    <script>
+        const fetchData = async () => {
+            const url = 'https://open-weather13.p.rapidapi.com/city/Vaughan/EN';
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'd1b64759e8msh273bfc38347dcddp18c719jsn1c30fde9e6a4',
+                    'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                const data = await response.json();
+
+                // Extract temperature data from the API response
+                const currentTempFahrenheit = data.main.temp;
+                const maxTempFahrenheit = data.main.temp_max;
+                const minTempFahrenheit = data.main.temp_min;
+
+                // Convert temperatures from Fahrenheit to Celsius
+                const currentTempCelsius = (currentTempFahrenheit - 32) * (5 / 9);
+                const maxTempCelsius = (maxTempFahrenheit - 32) * (5 / 9);
+                const minTempCelsius = (minTempFahrenheit - 32) * (5 / 9);
+
+                // Update HTML content with converted temperatures
+                document.getElementById('currentTemp').textContent = `${currentTempCelsius.toFixed(2)}°C`;
+                document.getElementById('maxTemp').textContent = `${maxTempCelsius.toFixed(2)}°C`;
+                document.getElementById('minTemp').textContent = `${minTempCelsius.toFixed(2)}°C`;
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                // Display error message if there's an issue fetching data
+                document.getElementById('errorMessage').textContent = 'Error fetching weather data';
+            }
+        };
+
+        // Call the async function to fetch and display weather data
+        fetchData();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
